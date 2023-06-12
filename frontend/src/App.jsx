@@ -1,24 +1,17 @@
 import React from "react";
-import "./index.css";
-import CodeMirror from "@uiw/react-codemirror";
-import { dracula } from "@uiw/codemirror-theme-dracula";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import EditorPage from "../pages/EditorPage";
 
-function App() {
-  const options = {
-    theme: "dracula",
-    mode: "jsx",
-  };
-
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <div className="absolute top-20 bottom-40 left-20 right-20 text-left">
-          <div>Create a function to add two numbers.</div>
-          <CodeMirror options={options} />
-        </div>
-      </header>
-    </div>
+      <Router>
+        <Routes>
+          <Route path="/editor" element={<EditorPage/>} />
+          <Route path="/*" element={<Navigate to="/editor" replace />} />
+        </Routes>
+      </Router>
   );
-}
+};
+
 
 export default App;

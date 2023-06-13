@@ -1,27 +1,30 @@
 import React from "react";
-import "codemirror/keymap/sublime";
-import "codemirror/theme/ayu-mirage.css";
 import CodeMirror from "@uiw/react-codemirror";
-import "codemirror/mode/python/python";
+import "@uiw/codemirror-theme-sublime";
+import { aura } from "@uiw/codemirror-theme-aura";
+import { dracula } from "@uiw/codemirror-theme-dracula";
+import { python } from '@codemirror/lang-python';
+import { loadLanguage, langNames, langs } from '@uiw/codemirror-extensions-langs';
+import { basicSetup, minimalSetup } from '@uiw/codemirror-extensions-basic-setup';
 import "../src/index.css";
-import { useState } from "react";
 
 const Editor = () => {
-  const [code, setCode] = useState("Enter some code...");
+  // <-- access these props
   return (
     <CodeMirror
-      options={{
-        value: { code },
-        theme: "ayu-mirage",
-        keyMap: "sublime",
-        mode: "python",
-        scrollbarStyle: "null",
-      }}
-      onChange={(editor, change) => {
-        setCode(editor.getValue());
-        console.log(code)
-      }}
-      className="w-96 h-80"
+      value="print('hello world!');"
+      height="400px"
+      theme={aura}
+      extensions={
+      [
+        langs.python(),
+        basicSetup({
+          foldGutter: true,
+          dropCursor: true,
+          allowMultipleSelections: true,
+          indentOnInput: true,
+        }),
+      ]}
     />
   );
 };

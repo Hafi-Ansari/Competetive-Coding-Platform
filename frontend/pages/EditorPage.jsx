@@ -32,7 +32,7 @@ const EditorPage = () => {
       >
         <Pane minSize="30%" maxSize="70%">
           <div className="h-full dark:bg-dark-secondary p-6 overflow-auto border-r-4 border-black">
-            <h2 className="text-2xl mb-4 text-white font-bold">Two Sum Problem</h2>
+            <h2 className="text-2xl mb-4 text-white font-bold">1. Two Sum Problem</h2>
             <p className="text-white mb-4">Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.</p>
             <p className="text-white mb-4">You may assume that each input would have exactly one solution, and you may not use the same element twice.</p>
             <p className="text-white mb-4">You can return the answer in any order.</p>
@@ -47,13 +47,13 @@ const EditorPage = () => {
             onDragEnd={stopPropagation}
           >
             <Pane>
-              <Editor className="border-b-4 border-black"/>
+              <Editor className="border-b-4 border-black"/> 
             </Pane>
             <Pane minSize="20%" maxSize="80%">
               <div className="h-full bg-dark-secondary p-6 border-t-4 border-black">
                 <div className="flex justify-between items-center">
-                  <h3 className="dark:text-white">Terminal</h3>
-                  <button className="px-4 py-2 rounded dark:bg-dark-accent dark:text-white">Submit</button>
+                  <h2 className="text-white">Console</h2>
+                  <button className="px-4 py-2 rounded text-white">Submit</button>
                 </div>
               </div>
             </Pane>

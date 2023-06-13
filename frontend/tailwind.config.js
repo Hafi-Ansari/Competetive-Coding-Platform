@@ -11,8 +11,8 @@ export default {
     extend: {
       colors: {
         "dark-primary": "#212121",
-        "dark-secondary": "#44475a",
-        "dark-accent": "#1f1b24",
+        "dark-secondary": "#282a36",
+        "dark-accent": "#15141b",
       },
     },
   },

@@ -8,7 +8,7 @@ import { loadLanguage, langNames, langs } from '@uiw/codemirror-extensions-langs
 import { basicSetup, minimalSetup } from '@uiw/codemirror-extensions-basic-setup';
 import "../src/index.css";
 
-const Editor = () => {
+const Editor = ({ onCodeChange }) => {
   // <-- access these props
   return (
     <CodeMirror
@@ -25,6 +25,7 @@ const Editor = () => {
           indentOnInput: true,
         }),
       ]}
+      onChange={onCodeChange}
     />
   );
 };

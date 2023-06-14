@@ -7,6 +7,7 @@ import axios from "axios";
 const EditorPage = () => {
   const [sizes, setSizes] = useState(["40%", "60%"]);
   const [innerSizes, setInnerSizes] = useState(["90%", "10%"]);
+  const [isPaneUp, setIsPaneUp] = useState(false);
   const [code, setCode] = useState("print('hello world!')");
   const [result, setResult] = useState("");
 
@@ -25,6 +26,16 @@ const EditorPage = () => {
       window.removeEventListener("dragend", stopPropagation);
     };
   }, []);
+
+  const showTestCase = () => {
+    if (innerSizes[1] === "10%") {
+      setInnerSizes(["60%", "40%"]);
+      setIsPaneUp(true);
+    } else {
+      setInnerSizes(["90%", "10%"]);
+      setIsPaneUp(false);
+    }
+  };
 
   const codeSubmit = () => {
     axios
@@ -75,8 +86,18 @@ const EditorPage = () => {
             <Pane minSize="10%" maxSize="40%">
               <div className="h-full bg-dark-secondary p-6 border-t-4 border-black">
                 <div className="flex justify-between items-center">
-                <button className="text-xs mb-4 text-white font-bold mt-[-3px]">Console ^</button>
-                  <button className="px-1 py-1 rounded text-white bg-dark-accent mt-[-15px]" onClick={codeSubmit}>Submit </button>
+                  <button
+                    className="text-xs mb-4 text-white font-bold mt-[-3px] hover:text-slate-400"
+                    onClick={showTestCase}
+                  >
+                    Console {isPaneUp ? "\u02C5" : "\u005E"}
+                  </button>
+                  <button
+                    className="px-1 py-1 rounded text-white bg-dark-accent mt-[-15px] hover:bg-neutral-700 hover:text-slate-400"
+                    onClick={codeSubmit}
+                  >
+                    Submit{" "}
+                  </button>
                 </div>
                 <p className="text-white">{result}</p>
               </div>

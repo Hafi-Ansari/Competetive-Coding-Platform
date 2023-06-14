@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Editor from "../components/EditorPageComponents/Editor";
 import TestCaseSelector from "../components/EditorPageComponents/TestCaseSelector";
 import ProblemStatement from "../components/EditorPageComponents/ProblemStatement";
+import problems from "../problems.json";
 import SplitPane, { Pane } from "split-pane-react";
 import "split-pane-react/esm/themes/default.css";
 import axios from "axios";
@@ -10,8 +11,11 @@ const EditorPage = () => {
   const [sizes, setSizes] = useState(["40%", "60%"]);
   const [innerSizes, setInnerSizes] = useState(["90%", "10%"]);
   const [isPaneUp, setIsPaneUp] = useState(false);
+  const [problem, setProblem] = useState(problems[2]);
   const [activeCase, setActiveCase] = useState(1);
-  const [code, setCode] = useState("print('hello world!')");
+  const [code, setCode] = useState(  `class Solution:
+  def funct(self, nums: List[int], target: int) -> List[int]:
+      # Your code here`);
   const [results, setResults] = useState({});
 
   const stopPropagation = (e) => {
@@ -55,9 +59,9 @@ const EditorPage = () => {
       <SplitPane split="vertical" sizes={sizes} onChange={setSizes}>
         <Pane minSize="30%" maxSize="70%">
           <div className="h-full dark:bg-dark-secondary p-6 overflow-auto border-r-4 border-black ">
-            <ProblemStatement 
-              title="1. Two Sum Problem"
-              description="Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target."
+            <ProblemStatement
+              title={problem.title}
+              description={problem.description}
             />
           </div>
         </Pane>
@@ -86,14 +90,19 @@ const EditorPage = () => {
                     Console {isPaneUp ? "\u02C7" : "\u02C6"}
                   </button>
                   <button
-                    className="px-1 py-1 rounded text-white bg-dark-accent mt-[-25px] hover:bg-neutral-700 hover:text-slate-400"
+                    className="p-2 rounded text-white bg-green-500 mt-[-25px] hover:bg-green-700 hover:text-slate-400"
                     onClick={codeSubmit}
                   >
                     Submit{" "}
                   </button>
                 </div>
                 {isPaneUp && (
-                  <TestCaseSelector activeCase={activeCase} onSelectCase={setActiveCase} results={results} />
+                  <TestCaseSelector
+                    activeCase={activeCase}
+                    onSelectCase={setActiveCase}
+                    results={results}
+                    testCases={problem.testCases}
+                  />
                 )}
               </div>
             </Pane>

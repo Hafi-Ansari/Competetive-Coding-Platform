@@ -1,4 +1,4 @@
-import React from "react";
+import React from "react"
 
 const ProblemStatement = ({ title, description }) => (
   <div>
@@ -11,4 +11,4 @@ const ProblemStatement = ({ title, description }) => (
   </div>
 );
 
-export default ProblemStatement;
+export default ProblemStatement

@@ -17,7 +17,7 @@ const Editor = ({ onCodeChange, code }) => {
       [
         langs.python(),
         basicSetup({
-          foldGutter: true,
+          foldGutter: false,
           dropCursor: true,
           allowMultipleSelections: true,
           indentOnInput: true,

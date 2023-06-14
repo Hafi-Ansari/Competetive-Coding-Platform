@@ -1,6 +1,6 @@
 import React from "react";
 
-const TestCase = ({ caseInput, target, output, expectedOutput }) => {
+const TestCase = ({ caseInput, target, expectedOutput, results }) => {
   return (
     <div className="my-2 bg-dark-secondary overflow-auto max-h-64">
       <div className="mb-2">
@@ -26,7 +26,7 @@ const TestCase = ({ caseInput, target, output, expectedOutput }) => {
           Output
         </label>
         <div id={`output-${caseInput}`} className="w-full p-2 rounded bg-dark-accent-2 text-white">
-          {output.toString()}
+          {results}
         </div>
       </div>
 

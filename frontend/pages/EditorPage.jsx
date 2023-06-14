@@ -12,7 +12,7 @@ const EditorPage = () => {
   const [isPaneUp, setIsPaneUp] = useState(false);
   const [activeCase, setActiveCase] = useState(1);
   const [code, setCode] = useState("print('hello world!')");
-  const [result, setResult] = useState("");
+  const [results, setResults] = useState({});
 
   const stopPropagation = (e) => {
     e.stopPropagation();
@@ -49,7 +49,10 @@ const EditorPage = () => {
       .post("http://localhost:80/python", { code })
       .then((response) => {
         console.log(response.data);
-        setResult(response.data.passOrFail);
+        setResults((prevResults) => ({
+          ...prevResults,
+          [activeCase]: response.data.passOrFail,
+        }));
       })
       .catch((error) => console.error(error));
   };
@@ -97,7 +100,7 @@ const EditorPage = () => {
                     className="text-s mb-4 text-white font-bold mt-[-5px] hover:text-slate-400"
                     onClick={showTestCase}
                   >
-                    Console {isPaneUp ? "\u02C7" : "\u02C6" }
+                    Console {isPaneUp ? "\u02C7" : "\u02C6"}
                   </button>
                   <button
                     className="px-1 py-1 rounded text-white bg-dark-accent mt-[-25px] hover:bg-neutral-700 hover:text-slate-400"
@@ -115,7 +118,7 @@ const EditorPage = () => {
                       <TestCase
                         caseInput={[2, 7, 11, 9, 15]}
                         target={9}
-                        output={[0, 0]}
+                        results={results[1]}
                         expectedOutput={[0, 1]}
                       />
                     )}
@@ -123,7 +126,7 @@ const EditorPage = () => {
                       <TestCase
                         caseInput={[3, 2, 4]}
                         target={6}
-                        output={[0, 0]}
+                        results={results[2]}
                         expectedOutput={[0, 1]}
                       />
                     )}
@@ -131,13 +134,12 @@ const EditorPage = () => {
                       <TestCase
                         caseInput={[3, 3]}
                         target={6}
-                        output={[0, 0]}
+                        results={results[3]}
                         expectedOutput={[0, 1]}
                       />
                     )}
                   </>
                 )}
-                <p className="text-white">{result}</p>
               </div>
             </Pane>
           </SplitPane>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Editor from "../components/Editor";
+import TestCase from "../components/TestCase";
 import SplitPane, { Pane } from "split-pane-react";
 import "split-pane-react/esm/themes/default.css";
 import axios from "axios";
@@ -29,7 +30,7 @@ const EditorPage = () => {
 
   const showTestCase = () => {
     if (innerSizes[1] === "10%") {
-      setInnerSizes(["60%", "40%"]);
+      setInnerSizes(["58%", "42%"]);
       setIsPaneUp(true);
     } else {
       setInnerSizes(["90%", "10%"]);
@@ -51,7 +52,7 @@ const EditorPage = () => {
     <div className="App h-screen dark:bg-dark-primary">
       <SplitPane split="vertical" sizes={sizes} onChange={setSizes}>
         <Pane minSize="30%" maxSize="70%">
-          <div className="h-full dark:bg-dark-secondary p-6 overflow-auto border-r-4 border-black">
+          <div className="h-full dark:bg-dark-secondary p-6 overflow-auto border-r-4 border-black ">
             <h2 className="text-2xl mb-4 text-white font-bold">
               1. Two Sum Problem
             </h2>
@@ -83,9 +84,9 @@ const EditorPage = () => {
                 code={code}
               />
             </Pane>
-            <Pane minSize="10%" maxSize="40%">
+            <Pane minSize="10%" maxSize="40% ">
               <div className="h-full bg-dark-secondary p-6 border-t-4 border-black">
-                <div className="flex justify-between items-center">
+                <div className="flex justify-between items-center ">
                   <button
                     className="text-xs mb-4 text-white font-bold mt-[-3px] hover:text-slate-400"
                     onClick={showTestCase}
@@ -99,6 +100,7 @@ const EditorPage = () => {
                     Submit{" "}
                   </button>
                 </div>
+                {isPaneUp && <TestCase caseNumber={1} />}
                 <p className="text-white">{result}</p>
               </div>
             </Pane>

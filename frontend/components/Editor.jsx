@@ -8,11 +8,11 @@ import { loadLanguage, langNames, langs } from '@uiw/codemirror-extensions-langs
 import { basicSetup, minimalSetup } from '@uiw/codemirror-extensions-basic-setup';
 import "../src/index.css";
 
-const Editor = ({ onCodeChange }) => {
+const Editor = ({ onCodeChange, code }) => {
   // <-- access these props
   return (
     <CodeMirror
-      value="print('hello world!');"
+      value={code}
       height="400px"
       theme={aura}
       extensions={

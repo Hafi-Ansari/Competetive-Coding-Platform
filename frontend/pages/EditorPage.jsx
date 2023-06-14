@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import Editor from "../components/Editor";
-import TestCase from "../components/TestCase";
-import CaseButton from "../components/CaseButton";
+import Editor from "../components/EditorPageComponents/Editor";
+import TestCaseSelector from "../components/EditorPageComponents/TestCaseSelector";
+import ProblemStatement from "../components/EditorPageComponents/ProblemStatement";
 import SplitPane, { Pane } from "split-pane-react";
 import "split-pane-react/esm/themes/default.css";
 import axios from "axios";
@@ -19,12 +19,10 @@ const EditorPage = () => {
   };
 
   useEffect(() => {
-    // Add event listeners to stop propagation of drag events
     window.addEventListener("dragstart", stopPropagation);
     window.addEventListener("dragend", stopPropagation);
 
     return () => {
-      // Remove event listeners when the component unmounts
       window.removeEventListener("dragstart", stopPropagation);
       window.removeEventListener("dragend", stopPropagation);
     };
@@ -40,15 +38,10 @@ const EditorPage = () => {
     }
   };
 
-  const onSelectCase = (num) => {
-    setActiveCase(num);
-  };
-
   const codeSubmit = () => {
     axios
       .post("http://localhost:80/python", { code })
       .then((response) => {
-        console.log(response.data);
         setResults((prevResults) => ({
           ...prevResults,
           [activeCase]: response.data.passOrFail,
@@ -62,20 +55,10 @@ const EditorPage = () => {
       <SplitPane split="vertical" sizes={sizes} onChange={setSizes}>
         <Pane minSize="30%" maxSize="70%">
           <div className="h-full dark:bg-dark-secondary p-6 overflow-auto border-r-4 border-black ">
-            <h2 className="text-2xl mb-4 text-white font-bold">
-              1. Two Sum Problem
-            </h2>
-            <p className="text-white mb-4">
-              Given an array of integers nums and an integer target, return
-              indices of the two numbers such that they add up to target.
-            </p>
-            <p className="text-white mb-4">
-              You may assume that each input would have exactly one solution,
-              and you may not use the same element twice.
-            </p>
-            <p className="text-white mb-4">
-              You can return the answer in any order.
-            </p>
+            <ProblemStatement 
+              title="1. Two Sum Problem"
+              description="Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target."
+            />
           </div>
         </Pane>
         <Pane>
@@ -110,35 +93,7 @@ const EditorPage = () => {
                   </button>
                 </div>
                 {isPaneUp && (
-                  <>
-                    <CaseButton caseNumber={1} onSelectCase={setActiveCase} />
-                    <CaseButton caseNumber={2} onSelectCase={setActiveCase} />
-                    <CaseButton caseNumber={3} onSelectCase={setActiveCase} />
-                    {activeCase === 1 && (
-                      <TestCase
-                        caseInput={[2, 7, 11, 9, 15]}
-                        target={9}
-                        results={results[1]}
-                        expectedOutput={[0, 1]}
-                      />
-                    )}
-                    {activeCase === 2 && (
-                      <TestCase
-                        caseInput={[3, 2, 4]}
-                        target={6}
-                        results={results[2]}
-                        expectedOutput={[0, 1]}
-                      />
-                    )}
-                    {activeCase === 3 && (
-                      <TestCase
-                        caseInput={[3, 3]}
-                        target={6}
-                        results={results[3]}
-                        expectedOutput={[0, 1]}
-                      />
-                    )}
-                  </>
+                  <TestCaseSelector activeCase={activeCase} onSelectCase={setActiveCase} results={results} />
                 )}
               </div>
             </Pane>

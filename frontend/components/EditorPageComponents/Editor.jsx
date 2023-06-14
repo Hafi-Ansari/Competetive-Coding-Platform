@@ -2,11 +2,9 @@ import React from "react";
 import CodeMirror from "@uiw/react-codemirror";
 import "@uiw/codemirror-theme-sublime";
 import { aura } from "@uiw/codemirror-theme-aura";
-import { dracula } from "@uiw/codemirror-theme-dracula";
-import { python } from '@codemirror/lang-python';
 import { loadLanguage, langNames, langs } from '@uiw/codemirror-extensions-langs';
 import { basicSetup, minimalSetup } from '@uiw/codemirror-extensions-basic-setup';
-import "../src/index.css";
+import "../../src/index.css";
 
 const Editor = ({ onCodeChange, code }) => {
   // <-- access these props

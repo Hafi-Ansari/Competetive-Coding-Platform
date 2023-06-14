@@ -10,9 +10,10 @@ export default {
   theme: {
     extend: {
       colors: {
-        "dark-primary": "#212121",
+        "dark-primary": "#29263c",
         "dark-secondary": "#282a36",
         "dark-accent": "#15141b",
+        "dark-accent-2": "#44475a",
       },
     },
   },

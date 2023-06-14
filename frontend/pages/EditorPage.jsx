@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Editor from "../components/Editor";
 import TestCase from "../components/TestCase";
+import CaseButton from "../components/CaseButton";
 import SplitPane, { Pane } from "split-pane-react";
 import "split-pane-react/esm/themes/default.css";
 import axios from "axios";
@@ -9,6 +10,7 @@ const EditorPage = () => {
   const [sizes, setSizes] = useState(["40%", "60%"]);
   const [innerSizes, setInnerSizes] = useState(["90%", "10%"]);
   const [isPaneUp, setIsPaneUp] = useState(false);
+  const [activeCase, setActiveCase] = useState(1);
   const [code, setCode] = useState("print('hello world!')");
   const [result, setResult] = useState("");
 
@@ -30,12 +32,16 @@ const EditorPage = () => {
 
   const showTestCase = () => {
     if (innerSizes[1] === "10%") {
-      setInnerSizes(["58%", "42%"]);
+      setInnerSizes(["35%", "65%"]);
       setIsPaneUp(true);
     } else {
       setInnerSizes(["90%", "10%"]);
       setIsPaneUp(false);
     }
+  };
+
+  const onSelectCase = (num) => {
+    setActiveCase(num);
   };
 
   const codeSubmit = () => {
@@ -88,19 +94,49 @@ const EditorPage = () => {
               <div className="h-full bg-dark-secondary p-6 border-t-4 border-black">
                 <div className="flex justify-between items-center ">
                   <button
-                    className="text-xs mb-4 text-white font-bold mt-[-3px] hover:text-slate-400"
+                    className="text-s mb-4 text-white font-bold mt-[-5px] hover:text-slate-400"
                     onClick={showTestCase}
                   >
-                    Console {isPaneUp ? "\u02C5" : "\u005E"}
+                    Console {isPaneUp ? "\u02C7" : "\u02C6" }
                   </button>
                   <button
-                    className="px-1 py-1 rounded text-white bg-dark-accent mt-[-15px] hover:bg-neutral-700 hover:text-slate-400"
+                    className="px-1 py-1 rounded text-white bg-dark-accent mt-[-25px] hover:bg-neutral-700 hover:text-slate-400"
                     onClick={codeSubmit}
                   >
                     Submit{" "}
                   </button>
                 </div>
-                {isPaneUp && <TestCase caseNumber={1} />}
+                {isPaneUp && (
+                  <>
+                    <CaseButton caseNumber={1} onSelectCase={setActiveCase} />
+                    <CaseButton caseNumber={2} onSelectCase={setActiveCase} />
+                    <CaseButton caseNumber={3} onSelectCase={setActiveCase} />
+                    {activeCase === 1 && (
+                      <TestCase
+                        caseInput={[2, 7, 11, 9, 15]}
+                        target={9}
+                        output={[0, 0]}
+                        expectedOutput={[0, 1]}
+                      />
+                    )}
+                    {activeCase === 2 && (
+                      <TestCase
+                        caseInput={[3, 2, 4]}
+                        target={6}
+                        output={[0, 0]}
+                        expectedOutput={[0, 1]}
+                      />
+                    )}
+                    {activeCase === 3 && (
+                      <TestCase
+                        caseInput={[3, 3]}
+                        target={6}
+                        output={[0, 0]}
+                        expectedOutput={[0, 1]}
+                      />
+                    )}
+                  </>
+                )}
                 <p className="text-white">{result}</p>
               </div>
             </Pane>

@@ -1,33 +1,42 @@
 import React from "react";
 
-const TestCase = ({ caseNumber, onInputChange, onExpectedOutputChange }) => {
+const TestCase = ({ caseInput, target, output, expectedOutput }) => {
   return (
-    <div className="my-2 bg-dark-secondary ">
-      <button className="text-white  bg-dark-accent  hover:bg-neutral-700 hover:text-slate-400 rounded">
-        Test Case {caseNumber}
-      </button>
+    <div className="my-2 bg-dark-secondary overflow-auto max-h-64">
       <div className="mb-2">
-        <label className="text-white block" htmlFor={`input-${caseNumber}`}>
+        <label className="text-white block font-bold text-xs mt-6 mb-2" htmlFor={`input-${caseInput}`}>
           Input
         </label>
-        <input
-          id={`input-${caseNumber}`}
-          className="w-full p-2 rounded bg-dark-accent-2 text-white"
-          onChange={(e) => onInputChange(e.target.value)}
-        />
+        <div id={`input-${caseInput}`} className="w-full p-2 rounded bg-dark-accent-2 text-white">
+          {caseInput.toString()}
+        </div>
       </div>
-      <div>
-        <label
-          className="text-white block"
-          htmlFor={`expected-output-${caseNumber}`}
-        >
+
+      <div className="mb-2">
+        <label className="text-white block font-bold text-xs mb-2" htmlFor={`target-${caseInput}`}>
+          Target
+        </label>
+        <div id={`target-${caseInput}`} className="w-full p-2 rounded bg-dark-accent-2 text-white">
+          {target}
+        </div>
+      </div>
+
+      <div className="mb-2">
+        <label className="text-white block font-bold text-xs mb-2" htmlFor={`output-${caseInput}`}>
+          Output
+        </label>
+        <div id={`output-${caseInput}`} className="w-full p-2 rounded bg-dark-accent-2 text-white">
+          {output.toString()}
+        </div>
+      </div>
+
+      <div className="mb-2">
+        <label className="text-white block font-bold text-xs mb-2" htmlFor={`expected-output-${caseInput}`}>
           Expected Output
         </label>
-        <input
-          id={`expected-output-${caseNumber}`}
-          className="w-full p-2 rounded bg-dark-accent-2 text-white"
-          onChange={(e) => onExpectedOutputChange(e.target.value)}
-        />
+        <div id={`expected-output-${caseInput}`} className="w-full p-2 rounded bg-dark-accent-2 text-white">
+          {expectedOutput.toString()}
+        </div>
       </div>
     </div>
   );

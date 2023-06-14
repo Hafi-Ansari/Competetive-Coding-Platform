@@ -13,7 +13,7 @@ const Editor = ({ onCodeChange, code }) => {
   return (
     <CodeMirror
       value={code}
-      height="400px"
+      height="515px"
       theme={aura}
       extensions={
       [

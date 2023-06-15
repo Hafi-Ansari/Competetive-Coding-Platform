@@ -17,84 +17,15 @@
     "followUp": "Can you come up with an algorithm that is less than O(n2) time complexity?",
     "testCases": [
       {
-        "input": [2, 7, 11, 15],
-        "target": 9,
+        "input": {"nums": [2, 7, 11, 15], "target": 9},
         "expectedOutput": [0, 1]
       },
       {
-        "input": [3, 2, 4],
-        "target": 6,
+        "input": {"nums": [3, 2, 4], "target": 6},
         "expectedOutput": [1, 2]
       },
       {
-        "input": [3, 3],
-        "target": 6,
-        "expectedOutput": [0, 1]
-      }
-    ]
-  },
-  {
-    "id": 2,
-    "title": "Add Two Numbers",
-    "description": "You are given two non-empty linked lists representing two non-negative integers. The digits are stored in reverse order, and each of their nodes contains a single digit. Add the two numbers and return the sum as a linked list.",
-    "testCases": [
-      {
-        "input": [2, 7, 11, 15],
-        "target": 9,
-        "expectedOutput": [0, 1]
-      },
-      {
-        "input": [3, 2, 4],
-        "target": 6,
-        "expectedOutput": [1, 2]
-      },
-      {
-        "input": [3, 3],
-        "target": 6,
-        "expectedOutput": [0, 1]
-      }
-    ]
-  },
-  {
-    "id": 3,
-    "title": "Longest Substring Without Repeating Characters",
-    "description": "Given a string s, find the length of the longest substring without repeating characters.",
-    "testCases": [
-      {
-        "input": [2, 7, 11, 15],
-        "target": 9,
-        "expectedOutput": [0, 1]
-      },
-      {
-        "input": [3, 2, 4],
-        "target": 6,
-        "expectedOutput": [1, 2]
-      },
-      {
-        "input": [3, 3],
-        "target": 6,
-        "expectedOutput": [0, 1]
-      }
-    ]
-  },
-  {
-    "id": 4,
-    "title": "Median of Two Sorted Arrays",
-    "description": "Given two sorted arrays nums1 and nums2 of size m and n respectively, return the median of the two sorted arrays.",
-    "testCases": [
-      {
-        "input": [2, 7, 11, 15],
-        "target": 9,
-        "expectedOutput": [0, 1]
-      },
-      {
-        "input": [3, 2, 4],
-        "target": 6,
-        "expectedOutput": [1, 2]
-      },
-      {
-        "input": [3, 3],
-        "target": 6,
+        "input": {"nums": [3, 3], "target": 6},
         "expectedOutput": [0, 1]
       }
     ]

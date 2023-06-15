@@ -12,9 +12,10 @@ const EditorPage = () => {
   const [innerSizes, setInnerSizes] = useState(["90%", "10%"]);
   const [isPaneUp, setIsPaneUp] = useState(false);
   const [problem, setProblem] = useState(problems[0]);
-  const [activeCase, setActiveCase] = useState(0);
+  const [activeCase, setActiveCase] = useState(1);
   const [code, setCode] = useState('print("Hello World")');
-  const [results, setResults] = useState({});
+  const [results, setResults] = useState({1: "NULL", 2: "NULL", 3:"NULL"});
+  //const [correct, setCorrect] = useState([null], [null], [null])
 
   const stopPropagation = (e) => {
     e.stopPropagation();

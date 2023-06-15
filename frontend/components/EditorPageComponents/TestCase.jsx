@@ -1,6 +1,6 @@
 import React from "react";
 
-const TestCase = ({ caseInput, target, expectedOutput, results }) => {
+const TestCase = ({ caseInput, expectedOutput, results }) => {
   return (
     <div className="my-2 bg-dark-secondary overflow-auto max-h-64">
       <div className="mb-2">
@@ -14,22 +14,11 @@ const TestCase = ({ caseInput, target, expectedOutput, results }) => {
           id={`input-${caseInput}`}
           className="w-full p-2 rounded bg-dark-accent-2 text-white"
         >
-          {caseInput.toString()}
-        </div>
-      </div>
-
-      <div className="mb-2">
-        <label
-          className="text-white block font-bold text-xs mb-2"
-          htmlFor={`target-${caseInput}`}
-        >
-          Target
-        </label>
-        <div
-          id={`target-${caseInput}`}
-          className="w-full p-2 rounded bg-dark-accent-2 text-white"
-        >
-          {target}
+          {Object.entries(caseInput).map(([key, value]) => (
+            <div key={key}>
+              {key}: {JSON.stringify(value)}
+            </div>
+          ))}
         </div>
       </div>
 
@@ -44,7 +33,7 @@ const TestCase = ({ caseInput, target, expectedOutput, results }) => {
           id={`expected-output-${caseInput}`}
           className="w-full p-2 rounded bg-dark-accent-2 text-white"
         >
-          {expectedOutput.toString()}
+          {JSON.stringify(expectedOutput)}
         </div>
       </div>
 

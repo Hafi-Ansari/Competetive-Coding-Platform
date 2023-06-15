@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Editor from "../components/EditorPageComponents/Editor";
 import TestCaseSelector from "../components/EditorPageComponents/TestCaseSelector";
 import ProblemStatement from "../components/EditorPageComponents/ProblemStatement";
+import Modal from "../components/EditorPageComponents/CompleteModal"
 import problems from "../problems.json";
 import SplitPane, { Pane } from "split-pane-react";
 import "split-pane-react/esm/themes/default.css";
@@ -16,6 +17,7 @@ const EditorPage = () => {
   const [code, setCode] = useState('print("Hello World")');
   const [results, setResults] = useState({ 1: "NULL", 2: "NULL", 3: "NULL" });
   const [isCorrect, setIsCorrect] = useState([null, null, null]);
+  const [isComplete, setIsComplete] = useState(false)
 
   const stopPropagation = (e) => {
     e.stopPropagation();
@@ -45,29 +47,39 @@ const EditorPage = () => {
     axios
       .post("http://localhost:80/python", { code })
       .then((response) => {
-        //handles for if active case is correct or not 
-        let resultArray = JSON.parse(response.data.passOrFail);
-        let isTestCasePassed =
-          (resultArray.toString() ==
-          problem.testCases[activeCase - 1].expectedOutput.toString())
-        let newCorrect = [...isCorrect];
-        newCorrect[activeCase - 1] = isTestCasePassed;
-        setIsCorrect(newCorrect);
 
-        //handles for updating user output in console
+        //udpates Output in Console
         setResults((prevResults) => ({
           ...prevResults,
           [activeCase]: response.data.passOrFail,
         }));
+
+        //Updates isCorrect and changes CaseButton colors
+        let resultArray = JSON.parse(response.data.passOrFail);
+        let isTestCasePassed =
+          resultArray.toString() ==
+          problem.testCases[activeCase - 1].expectedOutput.toString();
+        let newCorrect = [...isCorrect];
+        newCorrect[activeCase - 1] = isTestCasePassed;
+        setIsCorrect(newCorrect);
+
+        //checks end-condition of the problem 
+        if (newCorrect.every((value) => value === true)) {
+          setIsComplete(true)
+        }
       })
       .catch((error) => console.error(error));
   };
 
+const onClose = () =>{
+  setIsComplete(!isComplete)
+}
   return (
     <div className="App h-screen dark:bg-dark-primary">
       <SplitPane split="vertical" sizes={sizes} onChange={setSizes}>
         <Pane minSize="30%" maxSize="70%">
           <div className="h-full dark:bg-dark-secondary p-6 overflow-auto border-r-4 border-black ">
+            {isComplete && <Modal onClose={onClose}/>}
             <ProblemStatement
               title={problem.title}
               description={problem.description}

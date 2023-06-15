@@ -14,8 +14,8 @@ const EditorPage = () => {
   const [problem, setProblem] = useState(problems[0]);
   const [activeCase, setActiveCase] = useState(1);
   const [code, setCode] = useState('print("Hello World")');
-  const [results, setResults] = useState({1: "NULL", 2: "NULL", 3:"NULL"});
-  //const [correct, setCorrect] = useState([null], [null], [null])
+  const [results, setResults] = useState({ 1: "NULL", 2: "NULL", 3: "NULL" });
+  const [isCorrect, setIsCorrect] = useState([null, null, null]);
 
   const stopPropagation = (e) => {
     e.stopPropagation();
@@ -45,6 +45,16 @@ const EditorPage = () => {
     axios
       .post("http://localhost:80/python", { code })
       .then((response) => {
+        //handles for if active case is correct or not 
+        let resultArray = JSON.parse(response.data.passOrFail);
+        let isTestCasePassed =
+          (resultArray.toString() ==
+          problem.testCases[activeCase - 1].expectedOutput.toString())
+        let newCorrect = [...isCorrect];
+        newCorrect[activeCase - 1] = isTestCasePassed;
+        setIsCorrect(newCorrect);
+
+        //handles for updating user output in console
         setResults((prevResults) => ({
           ...prevResults,
           [activeCase]: response.data.passOrFail,
@@ -104,6 +114,7 @@ const EditorPage = () => {
                     onSelectCase={setActiveCase}
                     results={results}
                     testCases={problem.testCases}
+                    isCorrect={isCorrect}
                   />
                 )}
               </div>

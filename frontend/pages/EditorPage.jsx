@@ -11,12 +11,11 @@ const EditorPage = () => {
   const [sizes, setSizes] = useState(["40%", "60%"]);
   const [innerSizes, setInnerSizes] = useState(["90%", "10%"]);
   const [isPaneUp, setIsPaneUp] = useState(false);
-  const [problem, setProblem] = useState(problems[2]);
+  const [problem, setProblem] = useState(problems[0]);
   const [activeCase, setActiveCase] = useState(1);
-  const [code, setCode] = useState(  `class Solution:
-  def funct(self, nums: List[int], target: int) -> List[int]:
-      # Your code here`);
-  const [results, setResults] = useState({});
+  const [code, setCode] = useState('print("Hello World")');
+  const [results, setResults] = useState({1: "NULL", 2: "NULL", 3:"NULL"});
+  //const [correct, setCorrect] = useState([null], [null], [null])
 
   const stopPropagation = (e) => {
     e.stopPropagation();
@@ -62,6 +61,9 @@ const EditorPage = () => {
             <ProblemStatement
               title={problem.title}
               description={problem.description}
+              examples={problem.examples}
+              constraints={problem.constraints}
+              followUp={problem.followUp}
             />
           </div>
         </Pane>

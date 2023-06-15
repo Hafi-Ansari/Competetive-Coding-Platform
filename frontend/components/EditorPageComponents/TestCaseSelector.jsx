@@ -14,7 +14,6 @@ const TestCaseSelector = ({ activeCase, onSelectCase, results, testCases }) => (
           <TestCase
             key={index}
             caseInput={testCase.input}
-            target={testCase.target}
             results={results[activeCase]}
             expectedOutput={testCase.expectedOutput}
           />

@@ -17,6 +17,9 @@ export default {
         "dark-accent-3": "#bd93f9",
         "dark-accent-4": "#393c4b",
         "dark-accent-5": "#3d375e7f", 
+        "dark-accent-6": "#1e0026",
+        "dark-accent-7": "#23002c",
+        
       },
     },
   },

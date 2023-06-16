@@ -2,22 +2,32 @@ import React, { useState, useEffect } from "react";
 import Editor from "../components/EditorPageComponents/Editor";
 import TestCaseSelector from "../components/EditorPageComponents/TestCaseSelector";
 import ProblemStatement from "../components/EditorPageComponents/ProblemStatement";
-import Modal from "../components/EditorPageComponents/CompleteModal"
+import Modal from "../components/EditorPageComponents/CompleteModal";
 import problems from "../problems.json";
 import SplitPane, { Pane } from "split-pane-react";
 import "split-pane-react/esm/themes/default.css";
 import axios from "axios";
 
 const EditorPage = () => {
+  //new state that holds an object of different states of components on the page
+  const [problemStates, setProblemStates] = useState(
+    problems.map((problem) => ({
+      problem: problem,
+      code: 'print("Hello World")',
+      results: { 1: "NULL", 2: "NULL", 3: "NULL" },
+      isCorrect: [null, null, null],
+      isComplete: false,
+      activeCase: 1,
+    }))
+  );
+  //current problem user is on
   const [sizes, setSizes] = useState(["40%", "60%"]);
   const [innerSizes, setInnerSizes] = useState(["90%", "10%"]);
   const [isPaneUp, setIsPaneUp] = useState(false);
-  const [problem, setProblem] = useState(problems[0]);
-  const [activeCase, setActiveCase] = useState(1);
-  const [code, setCode] = useState('print("Hello World")');
-  const [results, setResults] = useState({ 1: "NULL", 2: "NULL", 3: "NULL" });
-  const [isCorrect, setIsCorrect] = useState([null, null, null]);
-  const [isComplete, setIsComplete] = useState(false)
+  const [currentProblemIndex, setCurrentProblemIndex] = useState(0);
+  const [currentProblemState, setCurrentProblemState] = useState(
+    problemStates[currentProblemIndex]
+  );
 
   const stopPropagation = (e) => {
     e.stopPropagation();
@@ -33,6 +43,11 @@ const EditorPage = () => {
     };
   }, []);
 
+  //when the index is changed, then a problem switch will occur 
+  useEffect(() => {
+    setCurrentProblemState(problemStates[currentProblemIndex]);
+  }, [currentProblemIndex]);
+
   const showTestCase = () => {
     if (innerSizes[1] === "10%") {
       setInnerSizes(["35%", "65%"]);
@@ -45,47 +60,48 @@ const EditorPage = () => {
 
   const codeSubmit = () => {
     axios
-      .post("http://localhost:80/python", { code })
+      .post("http://localhost:80/python", {
+        code: currentProblemState.code,
+      })
       .then((response) => {
-
-        //udpates Output in Console
-        setResults((prevResults) => ({
-          ...prevResults,
-          [activeCase]: response.data.passOrFail,
-        }));
-
-        //Updates isCorrect and changes CaseButton colors
+        let updatedProblemState = { ...currentProblemState };
+        updatedProblemState.results[updatedProblemState.activeCase] =
+          response.data.passOrFail;
         let resultArray = JSON.parse(response.data.passOrFail);
         let isTestCasePassed =
-          resultArray.toString() ==
-          problem.testCases[activeCase - 1].expectedOutput.toString();
-        let newCorrect = [...isCorrect];
-        newCorrect[activeCase - 1] = isTestCasePassed;
-        setIsCorrect(newCorrect);
-
-        //checks end-condition of the problem 
-        if (newCorrect.every((value) => value === true)) {
-          setIsComplete(true)
+          resultArray.toString() ===
+          updatedProblemState.problem.testCases[
+            updatedProblemState.activeCase - 1
+          ].expectedOutput.toString();
+        updatedProblemState.isCorrect[updatedProblemState.activeCase - 1] =
+          isTestCasePassed;
+        if (updatedProblemState.isCorrect.every((value) => value === true)) {
+          updatedProblemState.isComplete = true;
         }
+        setCurrentProblemState(updatedProblemState);
       })
       .catch((error) => console.error(error));
   };
 
-const onClose = () =>{
-  setIsComplete(!isComplete)
-}
+  const onClose = () => {
+    setCurrentProblemState({
+      ...currentProblemState,
+      isComplete: !currentProblemState.isComplete,
+    });
+  };
+
   return (
     <div className="App h-screen dark:bg-dark-primary">
       <SplitPane split="vertical" sizes={sizes} onChange={setSizes}>
         <Pane minSize="30%" maxSize="70%">
           <div className="h-full dark:bg-dark-secondary p-6 overflow-auto border-r-4 border-black ">
-            {isComplete && <Modal onClose={onClose}/>}
+            {currentProblemState.isComplete && <Modal onClose={onClose} />}
             <ProblemStatement
-              title={problem.title}
-              description={problem.description}
-              examples={problem.examples}
-              constraints={problem.constraints}
-              followUp={problem.followUp}
+              title={currentProblemState.problem.title}
+              description={currentProblemState.problem.description}
+              examples={currentProblemState.problem.examples}
+              constraints={currentProblemState.problem.constraints}
+              followUp={currentProblemState.problem.followUp}
             />
           </div>
         </Pane>
@@ -100,8 +116,13 @@ const onClose = () =>{
             <Pane>
               <Editor
                 className="border-b-4 border-black"
-                onCodeChange={setCode}
-                code={code}
+                onCodeChange={(newCode) =>
+                  setCurrentProblemState({
+                    ...currentProblemState,
+                    code: newCode,
+                  })
+                }
+                code={currentProblemState.code}
               />
             </Pane>
             <Pane minSize="10%" maxSize="40% ">
@@ -122,11 +143,16 @@ const onClose = () =>{
                 </div>
                 {isPaneUp && (
                   <TestCaseSelector
-                    activeCase={activeCase}
-                    onSelectCase={setActiveCase}
-                    results={results}
-                    testCases={problem.testCases}
-                    isCorrect={isCorrect}
+                    activeCase={currentProblemState.activeCase}
+                    onSelectCase={(newActiveCase) =>
+                      setCurrentProblemState({
+                        ...currentProblemState,
+                        activeCase: newActiveCase,
+                      })
+                    }
+                    results={currentProblemState.results}
+                    testCases={currentProblemState.problem.testCases}
+                    isCorrect={currentProblemState.isCorrect}
                   />
                 )}
               </div>

@@ -27,6 +27,7 @@ const EditorPage = () => {
     false,
     false,
   ]);
+
   const [sizes, setSizes] = useState(["40%", "60%"]);
   const [innerSizes, setInnerSizes] = useState(["90%", "10%"]);
   const [isPaneUp, setIsPaneUp] = useState(false);

@@ -13,9 +13,9 @@ const TestCaseSelector = ({ activeCase, onSelectCase, results, testCases, isCorr
         return (
           <TestCase
             key={index}
-            caseInput={testCase.input}
+            caseInput={testCase.inputs} // Adjusted this line
             results={results[activeCase]}
-            expectedOutput={testCase.expectedOutput}
+            expectedOutput={testCase.expectedOutput} // Adjusted this line
           />
         );
       }

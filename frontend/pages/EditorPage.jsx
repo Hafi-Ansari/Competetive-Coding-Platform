@@ -119,7 +119,6 @@ const EditorPage = () => {
               description={currentProblemState.problem.description}
               examples={currentProblemState.problem.examples}
               constraints={currentProblemState.problem.constraints}
-              followUp={currentProblemState.problem.followUp}
             />
           </div>
         </Pane>

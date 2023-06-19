@@ -2,11 +2,11 @@
   {
     "id": 1,
     "title": "Two Sum",
-    "description": "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target. You may assume that each input would have exactly one solution, and you may not use the same element twice. You can return the answer in any order.",
+    "description": "Given an array of integers  nums  and an integer  target , return  indices of the two numbers such that they add up to  target .  You may assume that each input would have  exactly  one solution , and you may not use the  same  element twice.  You can return the answer in any order.",
     "examples": [
-      "Input: nums = [2,7,11,15], target = 9 Output: [0,1]",
-      "Input: nums = [3,2,4], target = 6 Output: [1,2]",
-      "Input: nums = [3,3], target = 6 Output: [0,1]"
+      "Example 1:  Input: nums = [2,7,11,15], target = 9 Output: [0,1] Explanation: Because nums[0] + nums[1] == 9, we return [0, 1].   ",
+      "Example 2:  Input: nums = [3,2,4], target = 6 Output: [1,2]   ",
+      "Example 3:  Input: nums = [3,3], target = 6 Output: [0,1]     "
     ],
     "constraints": [
       "2 <= nums.length <= 104",
@@ -14,115 +14,136 @@
       "-109 <= target <= 109",
       "Only one valid answer exists."
     ],
-    "followUp": "Can you come up with an algorithm that is less than O(n2) time complexity?",
+    "code": "class Solution:\n    def twoSum(self, nums: List[int], target: int) -&gt; List\n[int]:",
     "testCases": [
       {
-        "input": { "nums": [2, 7, 11, 15], "target": 9 },
+        "inputs": {
+          "nums": [2, 7, 11, 15],
+          "target": 9
+        },
         "expectedOutput": [0, 1]
       },
       {
-        "input": { "nums": [3, 2, 4], "target": 6 },
+        "inputs": {
+          "nums": [3, 2, 4],
+          "target": 6
+        },
         "expectedOutput": [1, 2]
       },
       {
-        "input": { "nums": [3, 3], "target": 6 },
+        "inputs": {
+          "nums": [3, 3],
+          "target": 6
+        },
         "expectedOutput": [0, 1]
       }
     ]
   },
-
   {
     "id": 2,
-    "title": "Two Sum II - Input Array Is Sorted",
-    "description": "Given a 1-indexed array of integers numbers that is already sorted in non-decreasing order, find two numbers such that they add up to a specific target number. Let these two numbers be numbers[index1] and numbers[index2] where 1 <= index1 < index2 < numbers.length.\n\nReturn the indices of the two numbers, index1 and index2, added by one as an integer array [index1, index2] of length 2.\n\nThe tests are generated such that there is exactly one solution. You may not use the same element twice.\n\nYour solution must use only constant extra space.",
+    "title": "Add Two Numbers",
+    "description": "You are given two  non-empty  linked lists representing two non-negative integers. The digits are stored in  reverse order , and each of their nodes contains a single digit. Add the two numbers and return the sum as a linked list.  You may assume the two numbers do not contain any leading zero, except the number 0 itself.",
     "examples": [
-      "Input: numbers = [2,7,11,15], target = 9\nOutput: [1,2]\nExplanation: The sum of 2 and 7 is 9. Therefore, index1 = 1, index2 = 2. We return [1, 2].",
-      "Input: numbers = [2,3,4], target = 6\nOutput: [1,3]\nExplanation: The sum of 2 and 4 is 6. Therefore index1 = 1, index2 = 3. We return [1, 3].",
-      "Input: numbers = [-1,0], target = -1\nOutput: [1,2]\nExplanation: The sum of -1 and 0 is -1. Therefore index1 = 1, index2 = 2. We return [1, 2]."
+      "Example 1:  Input: l1 = [2,4,3], l2 = [5,6,4] Output: [7,0,8] Explanation: 342 + 465 = 807.   ",
+      "Example 2:  Input: l1 = [0], l2 = [0] Output: [0]   ",
+      "Example 3:  Input: l1 = [9,9,9,9,9,9,9], l2 = [9,9,9,9] Output: [8,9,9,9,0,0,0,1]     "
     ],
     "constraints": [
-      "2 <= numbers.length <= 3 * 104",
-      "-1000 <= numbers[i] <= 1000",
-      "numbers is sorted in non-decreasing order.",
-      "-1000 <= target <= 1000",
-      "The tests are generated such that there is exactly one solution."
+      "The number of nodes in each linked list is in the range [1, 100].",
+      "0 <= Node.val <= 9",
+      "It is guaranteed that the list represents a number that does not have leading zeros."
     ],
+    "code": "# Definition for singly-linked list.\n# class ListNode:\n#     def __init__(self, val=0, next=None):\n#         self.val = val\n#         self.next = next\nclass Solution:\n    def addTwoNumbers(self, l1: Optional[ListNode], l2: \nOptional[ListNode]) -&gt; Optional[ListNode]:",
     "testCases": [
       {
-        "input": { "numbers": [2, 7, 11, 15], "target": 9 },
-        "expectedOutput": [1, 2]
+        "inputs": {
+          "l1": [2, 4, 3],
+          "l2": [5, 6, 4]
+        },
+        "expectedOutput": [7, 0, 8]
       },
       {
-        "input": { "numbers": [2, 3, 4], "target": 6 },
-        "expectedOutput": [1, 3]
+        "inputs": {
+          "l1": [0],
+          "l2": [0]
+        },
+        "expectedOutput": [0]
       },
       {
-        "input": { "numbers": [-1, 0], "target": -1 },
-        "expectedOutput": [1, 2]
+        "inputs": {
+          "l1": [9, 9, 9, 9, 9, 9, 9],
+          "l2": [9, 9, 9, 9]
+        },
+        "expectedOutput": [8, 9, 9, 9, 0, 0, 0, 1]
       }
     ]
   },
-
   {
-    "id": 15,
-    "title": "3Sum",
-    "description": "Given an integer array nums, return all the triplets [nums[i], nums[j], nums[k]] such that i != j, i != k, and j != k, and nums[i] + nums[j] + nums[k] == 0.\n\nNotice that the solution set must not contain duplicate triplets.",
+    "id": 3,
+    "title": "Longest Substring Without Repeating Characters",
+    "description": "Given a string  s , find the length of the  longest   substring  without repeating characters.",
     "examples": [
-      "Input: nums = [-1,0,1,2,-1,-4]\nOutput: [[-1,-1,2],[-1,0,1]]\nExplanation: \nnums[0] + nums[1] + nums[2] = (-1) + 0 + 1 = 0.\nnums[1] + nums[2] + nums[4] = 0 + 1 + (-1) = 0.\nnums[0] + nums[3] + nums[4] = (-1) + 2 + (-1) = 0.\nThe distinct triplets are [-1,0,1] and [-1,-1,2].\nNotice that the order of the output and the order of the triplets does not matter.",
-      "Input: nums = [0,1,1]\nOutput: []\nExplanation: The only possible triplet does not sum up to 0.",
-      "Input: nums = [0,0,0]\nOutput: [[0,0,0]]\nExplanation: The only possible triplet sums up to 0."
+      "Example 1:  Input: s = \"abcabcbb\" Output: 3 Explanation: The answer is \"abc\", with the length of 3.   ",
+      "Example 2:  Input: s = \"bbbbb\" Output: 1 Explanation: The answer is \"b\", with the length of 1.   ",
+      "Example 3:  Input: s = \"pwwkew\" Output: 3 Explanation: The answer is \"wke\", with the length of 3. Notice that the answer must be a substring, \"pwke\" is a subsequence and not a substring.     "
     ],
-    "constraints": ["3 <= nums.length <= 3000", "-105 <= nums[i] <= 105"],
-    "followUp": null,
+    "constraints": [
+      "0 <= s.length <= 5 * 104",
+      "s consists of English letters, digits, symbols and spaces."
+    ],
+    "code": "class Solution:\n    def lengthOfLongestSubstring(self, s: str) -&gt; int:",
     "testCases": [
       {
-        "input": { "nums": [-1, 0, 1, 2, -1, -4] },
-        "expectedOutput": [
-          [-1, -1, 2],
-          [-1, 0, 1]
-        ]
+        "inputs": {
+          "s": "abcabcbb"
+        },
+        "expectedOutput": 3
       },
       {
-        "input": { "nums": [0, 1, 1] },
-        "expectedOutput": []
+        "inputs": {
+          "s": "bbbbb"
+        },
+        "expectedOutput": 1
       },
       {
-        "input": { "nums": [0, 0, 0] },
-        "expectedOutput": [[0, 0, 0]]
+        "inputs": {
+          "s": "pwwkew"
+        },
+        "expectedOutput": 3
       }
     ]
   },
-
   {
-    "id": 18,
-    "title": "4Sum",
-    "description": "Given an array nums of n integers, return an array of all the unique quadruplets [nums[a], nums[b], nums[c], nums[d]] such that:\n\n0 <= a, b, c, d < n\na, b, c, and d are distinct.\nnums[a] + nums[b] + nums[c] + nums[d] == target\nYou may return the answer in any order.",
+    "id": 4,
+    "title": "Median Of Two Sorted Arrays",
+    "description": "Given two sorted arrays  nums1  and  nums2  of size  m  and  n  respectively, return  the median  of the two sorted arrays.  The overall run time complexity should be  O(log (m+n)) .",
     "examples": [
-      "Input: nums = [1,0,-1,0,-2,2], target = 0\nOutput: [[-2,-1,1,2],[-2,0,0,2],[-1,0,0,1]]",
-      "Input: nums = [2,2,2,2,2], target = 8\nOutput: [[2,2,2,2]]"
+      "Example 1:  Input: nums1 = [1,3], nums2 = [2] Output: 2.00000 Explanation: merged array = [1,2,3] and median is 2.   ",
+      "Example 2:  Input: nums1 = [1,2], nums2 = [3,4] Output: 2.50000 Explanation: merged array = [1,2,3,4] and median is (2 + 3) / 2 = 2.5.     "
     ],
     "constraints": [
-      "1 <= nums.length <= 200",
-      "-109 <= nums[i] <= 109",
-      "-109 <= target <= 109"
+      "nums1.length == m",
+      "nums2.length == n",
+      "0 <= m <= 1000",
+      "0 <= n <= 1000",
+      "1 <= m + n <= 2000",
+      "-106 <= nums1[i], nums2[i] <= 106"
     ],
-    "followUp": null,
+    "code": "class Solution:\n    def findMedianSortedArrays(self, nums1: List[int], \nnums2: List[int]) -&gt; float:",
     "testCases": [
       {
-        "input": { "nums": [1, 0, -1, 0, -2, 2], "target": 0 },
-        "expectedOutput": [
-          [-2, -1, 1, 2],
-          [-2, 0, 0, 2],
-          [-1, 0, 0, 1]
-        ]
+        "inputs": {
+          "nums1": [1, 3],
+          "nums2": [2]
+        },
+        "expectedOutput": 2.0
       },
       {
-        "input": { "nums": [2, 2, 2, 2, 2], "target": 8 },
-        "expectedOutput": [[2, 2, 2, 2]]
-      },
-      {
-        "input": { "nums": [2, 2, 2, 2, 2], "target": 8 },
-        "expectedOutput": [[2, 2, 2, 2]]
+        "inputs": {
+          "nums1": [1, 2],
+          "nums2": [3, 4]
+        },
+        "expectedOutput": 2.5
       }
     ]
   }

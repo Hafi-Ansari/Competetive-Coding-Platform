@@ -1,6 +1,6 @@
 import React from "react";
 
-const ProblemStatement = ({ title, description, examples, constraints, followUp }) => (
+const ProblemStatement = ({ title, description, examples, constraints}) => (
   <div>
     <h2 className="text-2xl mb-4 text-white font-bold">
       {title}
@@ -22,12 +22,6 @@ const ProblemStatement = ({ title, description, examples, constraints, followUp 
             <li className="scale-90 mb-2 rounded bg-dark-accent-2 text-white"  key={index}>{constraint}</li>
           ))}
         </ul>
-      </div>
-    )}
-    {followUp && (
-      <div> 
-        <h3 className="text-white block font-bold text-xs mb-2 pt-4">Follow Up:</h3>
-        <p className="w-full p-2 rounded bg-dark-accent-2 text-white">{followUp}</p>
       </div>
     )}
   </div>

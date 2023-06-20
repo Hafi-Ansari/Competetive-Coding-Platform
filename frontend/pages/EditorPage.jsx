@@ -9,17 +9,33 @@ import SplitPane, { Pane } from "split-pane-react";
 import "split-pane-react/esm/themes/default.css";
 import axios from "axios";
 
+
 const EditorPage = () => {
-  const [problemStates, setProblemStates] = useState(
-    problems.map((problem) => ({
-      problem: problem,
-      code: 'print("Hello World")',
-      results: { 1: "NULL", 2: "NULL", 3: "NULL" },
-      isCorrect: [null, null, null],
-      isComplete: false,
-      activeCase: 1,
-    }))
-  );
+  const [problemStates, setProblemStates] = useState([]);
+
+
+  useEffect(() => {
+    // Make a GET request to your backend to get four random problems
+    axios
+      .get("http://localhost:80/problems/random")
+      .then((response) => {
+        // When the data is returned, update your state
+        setProblemStates(
+          response.data.map((problem) => ({
+            problem: problem,
+            code: problem.code,
+            results: { 1: "NULL", 2: "NULL", 3: "NULL" },
+            isCorrect: [null, null, null],
+            isComplete: false,
+            activeCase: 1,
+          }))
+        );
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, []);
+
 
   const [completedProblems, setCompletedProblems] = useState([
     false,
@@ -28,19 +44,23 @@ const EditorPage = () => {
     false,
   ]);
 
+
   const [sizes, setSizes] = useState(["40%", "60%"]);
   const [innerSizes, setInnerSizes] = useState(["90%", "10%"]);
   const [isPaneUp, setIsPaneUp] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [currentProblemIndex, setCurrentProblemIndex] = useState(0);
 
+
   const stopPropagation = (e) => {
     e.stopPropagation();
   };
 
+
   useEffect(() => {
     window.addEventListener("dragstart", stopPropagation);
     window.addEventListener("dragend", stopPropagation);
+
 
     return () => {
       window.removeEventListener("dragstart", stopPropagation);
@@ -48,18 +68,21 @@ const EditorPage = () => {
     };
   }, []);
 
+
   useEffect(() => {
     setCompletedProblems((prev) => {
       let updatedProblems = [...prev];
       updatedProblems[currentProblemIndex] =
-        problemStates[currentProblemIndex].isComplete;
+        problemStates[currentProblemIndex]?.isComplete;
       return updatedProblems;
     });
   }, [problemStates, currentProblemIndex]);
 
+
   const changeTab = (newIndex) => {
     setCurrentProblemIndex(newIndex);
   };
+
 
   const showTestCase = () => {
     if (innerSizes[1] === "10%") {
@@ -70,6 +93,7 @@ const EditorPage = () => {
       setIsPaneUp(false);
     }
   };
+
 
   const codeSubmit = () => {
     axios
@@ -101,11 +125,14 @@ const EditorPage = () => {
       .catch((error) => console.error(error));
   };
 
+
   const onClose = () => {
     setModalVisible(false);
   };
 
+
   const currentProblemState = problemStates[currentProblemIndex];
+
 
   return (
     <div className="App h-screen dark:bg-dark-primary">
@@ -115,10 +142,10 @@ const EditorPage = () => {
             <Tabs changeTab={changeTab} completedProblems={completedProblems} />
             {modalVisible && <Modal onClose={onClose} />}
             <ProblemStatement
-              title={currentProblemState.problem.title}
-              description={currentProblemState.problem.description}
-              examples={currentProblemState.problem.examples}
-              constraints={currentProblemState.problem.constraints}
+              title={currentProblemState?.problem?.title}
+              description={currentProblemState?.problem?.description}
+              examples={currentProblemState?.problem?.examples}
+              constraints={currentProblemState?.problem?.constraints}
             />
           </div>
         </Pane>
@@ -138,7 +165,7 @@ const EditorPage = () => {
                   updatedProblemStates[currentProblemIndex].code = newCode;
                   setProblemStates(updatedProblemStates);
                 }}
-                code={currentProblemState.code}
+                code={currentProblemState?.code}
               />
             </Pane>
             <Pane minSize="10%" maxSize="40% ">
@@ -159,16 +186,16 @@ const EditorPage = () => {
                 </div>
                 {isPaneUp && (
                   <TestCaseSelector
-                    activeCase={currentProblemState.activeCase}
+                    activeCase={currentProblemState?.activeCase}
                     onSelectCase={(newActiveCase) => {
                       let updatedProblemStates = [...problemStates];
                       updatedProblemStates[currentProblemIndex].activeCase =
                         newActiveCase;
                       setProblemStates(updatedProblemStates);
                     }}
-                    results={currentProblemState.results}
-                    testCases={currentProblemState.problem.testCases}
-                    isCorrect={currentProblemState.isCorrect}
+                    results={currentProblemState?.results}
+                    testCases={currentProblemState?.problem?.testCases}
+                    isCorrect={currentProblemState?.isCorrect}
                   />
                 )}
               </div>
@@ -180,4 +207,8 @@ const EditorPage = () => {
   );
 };
 
+
 export default EditorPage;
+
+
+

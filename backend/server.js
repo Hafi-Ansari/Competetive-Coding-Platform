@@ -2,7 +2,6 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 require("dotenv").config();
-const runPythonScript = require("./pythonrunner");
 const app = express();
 const port = 80;
 
@@ -27,16 +26,11 @@ mongoose
     console.error("MongoDB connection error:", error);
   });
 
-// Python runner route
-app.post("/python", async (req, res) => {
-  try {
-    const result = await runPythonScript(req.body.code);
-    res.json({ passOrFail: result });
-  } catch (error) {
-    res.status(500).json({ error: error.toString() });
-  }
-});
 
 // Use problems routes
 const problemsRouter = require("./routes/problems");
 app.use("/problems", problemsRouter);
+
+// Use Python runner route
+const pythonRouter = require("./routes/python");
+app.use("/python", pythonRouter);

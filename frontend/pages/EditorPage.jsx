@@ -9,13 +9,11 @@ import SplitPane, { Pane } from "split-pane-react";
 import "split-pane-react/esm/themes/default.css";
 import axios from "axios";
 
-
 const EditorPage = () => {
   const [problemStates, setProblemStates] = useState([]);
 
-
   useEffect(() => {
-    // Make a GET request to your backend to get four random problems
+    // Make a GET request to backend to get four random problems
     axios
       .get("http://localhost:80/problems/random")
       .then((response) => {
@@ -24,8 +22,8 @@ const EditorPage = () => {
           response.data.map((problem) => ({
             problem: problem,
             code: problem.code,
-            results: { 1: "NULL", 2: "NULL", 3: "NULL" },
-            isCorrect: [null, null, null],
+            results: new Array(problem.testCases.length).fill("NULL"),
+            isCorrect: new Array(problem.testCases.length).fill(null),
             isComplete: false,
             activeCase: 1,
           }))
@@ -36,7 +34,6 @@ const EditorPage = () => {
       });
   }, []);
 
-
   const [completedProblems, setCompletedProblems] = useState([
     false,
     false,
@@ -44,30 +41,25 @@ const EditorPage = () => {
     false,
   ]);
 
-
   const [sizes, setSizes] = useState(["40%", "60%"]);
   const [innerSizes, setInnerSizes] = useState(["90%", "10%"]);
   const [isPaneUp, setIsPaneUp] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [currentProblemIndex, setCurrentProblemIndex] = useState(0);
 
-
   const stopPropagation = (e) => {
     e.stopPropagation();
   };
 
-
   useEffect(() => {
     window.addEventListener("dragstart", stopPropagation);
     window.addEventListener("dragend", stopPropagation);
-
 
     return () => {
       window.removeEventListener("dragstart", stopPropagation);
       window.removeEventListener("dragend", stopPropagation);
     };
   }, []);
-
 
   useEffect(() => {
     setCompletedProblems((prev) => {
@@ -78,11 +70,9 @@ const EditorPage = () => {
     });
   }, [problemStates, currentProblemIndex]);
 
-
   const changeTab = (newIndex) => {
     setCurrentProblemIndex(newIndex);
   };
-
 
   const showTestCase = () => {
     if (innerSizes[1] === "10%") {
@@ -94,45 +84,86 @@ const EditorPage = () => {
     }
   };
 
-
   const codeSubmit = () => {
+    // Extract current problem and its code
+    const currentProblem = problemStates[currentProblemIndex];
+    const currentCode = currentProblem.code;
+
+    // Assume methodName can be derived from current problem
+    // Extract the method name from the current problem
+    let methodName;
+    const lines = currentCode.split("\n");
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i].trim();
+      if (line.startsWith("def ")) {
+        methodName = line.split(" ")[1].split("(")[0];
+        break;
+      }
+    }
+
+    // Current testcase
+    const testCase = currentProblem.problem.testCases[currentProblem.activeCase - 1];
+
+    // Send POST request to the backend with the current code
     axios
       .post("http://localhost:80/python", {
-        code: problemStates[currentProblemIndex].code,
+        code: currentCode,
+        methodName: methodName,
+        testCase: testCase.inputs,
       })
       .then((response) => {
+        // Clone problemStates to avoid direct state mutation
         let updatedProblemStates = [...problemStates];
-        let updatedProblemState = {
-          ...updatedProblemStates[currentProblemIndex],
-        };
-        updatedProblemState.results[updatedProblemState.activeCase] =
-          response.data.passOrFail;
-        let resultArray = JSON.parse(response.data.passOrFail);
-        let isTestCasePassed =
-          resultArray.toString() ===
-          updatedProblemState.problem.testCases[
-            updatedProblemState.activeCase - 1
-          ].expectedOutput.toString();
-        updatedProblemState.isCorrect[updatedProblemState.activeCase - 1] =
+
+        // Clone the current problem from the updated state
+        let updatedProblem = { ...currentProblem };
+
+        // Extract result from the response and parse it
+        let executionResult = response.data.result;
+
+        // Update the result of the active test case
+        updatedProblem.results[updatedProblem.activeCase] = executionResult;
+
+        // Check if the output matches the expected output
+        let expectedOutput =
+          updatedProblem.problem.testCases[updatedProblem.activeCase - 1]
+            .expectedOutput;
+        //checks if result matches expectedoutput and stores in place as either true or false
+        let isTestCasePassed = JSON.stringify(executionResult) === JSON.stringify(expectedOutput);
+
+        // Update the test case's pass status
+        updatedProblem.isCorrect[updatedProblem.activeCase - 1] =
           isTestCasePassed;
-        if (updatedProblemState.isCorrect.every((value) => value === true)) {
-          updatedProblemState.isComplete = true;
+
+        // If all test cases have passed, the problem is complete
+        if (
+          updatedProblem.isCorrect.every((testCaseResult) => testCaseResult)
+        ) {
+          updatedProblem.isComplete = true;
+
+          // Display modal if the problem is complete
           setModalVisible(true);
         }
-        updatedProblemStates[currentProblemIndex] = updatedProblemState;
+
+        // Replace the current problem in the state with the updated problem
+        updatedProblemStates[currentProblemIndex] = updatedProblem;
+
+        // Update the state
         setProblemStates(updatedProblemStates);
       })
-      .catch((error) => console.error(error));
+      .catch((error) => {
+        console.error("Error processing Python code:", error);
+        console.error("Error message:", error.message);
+        console.error("Error response:", error.response);
+        console.error("Error stack:", error.stack);
+      });
   };
-
 
   const onClose = () => {
     setModalVisible(false);
   };
 
-
   const currentProblemState = problemStates[currentProblemIndex];
-
 
   return (
     <div className="App h-screen dark:bg-dark-primary">
@@ -207,8 +238,4 @@ const EditorPage = () => {
   );
 };
 
-
 export default EditorPage;
-
-
-

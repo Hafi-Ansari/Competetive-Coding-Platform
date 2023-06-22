@@ -89,9 +89,28 @@ const EditorPage = () => {
     const currentProblem = problemStates[currentProblemIndex];
     const currentCode = currentProblem.code;
 
+    // Assume methodName can be derived from current problem
+    // Extract the method name from the current problem
+    let methodName;
+    const lines = currentCode.split("\n");
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i].trim();
+      if (line.startsWith("def ")) {
+        methodName = line.split(" ")[1].split("(")[0];
+        break;
+      }
+    }
+
+    // Current testcase
+    const testCase = currentProblem.problem.testCases[currentProblem.activeCase - 1];
+
     // Send POST request to the backend with the current code
     axios
-      .post("http://localhost:80/python", { code: currentCode })
+      .post("http://localhost:80/python", {
+        code: currentCode,
+        methodName: methodName,
+        testCase: testCase.inputs,
+      })
       .then((response) => {
         // Clone problemStates to avoid direct state mutation
         let updatedProblemStates = [...problemStates];
@@ -100,7 +119,7 @@ const EditorPage = () => {
         let updatedProblem = { ...currentProblem };
 
         // Extract result from the response and parse it
-        let executionResult = JSON.parse(response.data.passOrFail);
+        let executionResult = response.data.result;
 
         // Update the result of the active test case
         updatedProblem.results[updatedProblem.activeCase] = executionResult;
@@ -109,8 +128,8 @@ const EditorPage = () => {
         let expectedOutput =
           updatedProblem.problem.testCases[updatedProblem.activeCase - 1]
             .expectedOutput;
-        let isTestCasePassed =
-          executionResult.toString() === expectedOutput.toString();
+        //checks if result matches expectedoutput and stores in place as either true or false
+        let isTestCasePassed = JSON.stringify(executionResult) === JSON.stringify(expectedOutput);
 
         // Update the test case's pass status
         updatedProblem.isCorrect[updatedProblem.activeCase - 1] =
@@ -132,7 +151,12 @@ const EditorPage = () => {
         // Update the state
         setProblemStates(updatedProblemStates);
       })
-      .catch((error) => console.error("Error processing Python code:", error));
+      .catch((error) => {
+        console.error("Error processing Python code:", error);
+        console.error("Error message:", error.message);
+        console.error("Error response:", error.response);
+        console.error("Error stack:", error.stack);
+      });
   };
 
   const onClose = () => {

@@ -1,0 +1,45 @@
+This is a project to act as a competetive coding platform for leetcode-style data structure and algorithm questions to prepare for technical interviews. Inspired by the late binarysearch.io. User signs in through a Google account and enters a room of up to four players where they compete with four randomly selected Leetcode questions from a database. Supports Python only at the moment.
+
+Tech Stack: React.js, Node.js, Express.js, MongoDB, Google Firebase, Firebase Authentication, Socket.io, Mongoose, Python Subprocess
+
+Leetcode Web-Scraper: Created to web scrape all necessary Leetcode problem information and added to a MongoDB database. Can be found at: https://github.com/Hafi-Ansari/Web-Scraping-Leetcode
+
+Backend: Holds the API Endpoints to retrieve problem data from the MongoDB database through Mongoose. Also has a Python subprocess module to process user submitted code. A new process is spawned for every testcase of a given problem, interpreted, and sent back as either an error of some kind or the interpreted result of the code. Basic sanitization methods used such as input sanitization, limited privileging, and white-listing modules. Socket.io used for virtual rooms. 
+
+Frontend: Google authentication, allows user to make or join a room through Socket.io, makes a GET fetch request to backend for Leetcode problems, displays four leetcode problems, their testcases, and keeps track of correct and incorrect testcases. Has an aesthetic Code Editor through CodeMirror, sends a POST request with user's code as well as testcase data. 
+
+Libraries:
+
+    Frontend:
+        "@codemirror/lang-python": "^6.1.3",
+        "@uiw/codemirror-extensions-basic-setup": "^4.21.3",
+        "@uiw/codemirror-extensions-langs": "^4.21.3",
+        "@uiw/codemirror-theme-aura": "^4.21.3",
+        "@uiw/codemirror-theme-dracula": "^4.21.3",
+        "@uiw/codemirror-theme-sublime": "^4.21.3",
+        "@uiw/react-codemirror": "^4.21.3",
+
+        "axios": "^1.4.0",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "react-router-dom": "^6.12.1",
+        "split-pane-react": "^0.1.3"
+        "@types/react": "^18.0.37",
+        "@types/react-dom": "^18.0.11",
+        "@vitejs/plugin-react": "^4.0.0",
+        "autoprefixer": "^10.4.14",
+        "eslint": "^8.38.0",
+        "eslint-plugin-react": "^7.32.2",
+        "eslint-plugin-react-hooks": "^4.6.0",
+        "eslint-plugin-react-refresh": "^0.3.4",
+        "postcss": "^8.4.24",
+        "tailwindcss": "^3.3.2",
+        "vite": "^4.3.9"
+    
+    Backend:
+        "cors": "^2.8.5",
+        "dotenv": "^16.3.1",
+        "express": "^4.18.2",
+        "mongoose": "^7.3.0",
+        "python-shell": "^5.0.0",
+        "uuid": "^9.0.0"

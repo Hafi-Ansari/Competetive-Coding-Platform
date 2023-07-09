@@ -18,6 +18,7 @@ const EditorPage = () => {
       .get("http://localhost:80/problems/random")
       .then((response) => {
         // When the data is returned, update your state
+        console.log(response)
         setProblemStates(
           response.data.map((problem) => ({
             problem: problem,
